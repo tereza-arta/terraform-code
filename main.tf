@@ -1,17 +1,17 @@
 resource "aws_instance" "custom_ec2" {
-  ami = "099720109477"
-  instance_type = "t3.micro"
-  associate_public_ip_address = true
+  ami = var.ami
+  instance_type = var.instance_type
+  associate_public_ip_address = var.associate_public_ip
   key_name = aws_key_pair.key.key_name
-  user_data = "${path.module}/.user_data/install_docker.sh"
+  user_data = "${path.module}/.user_data/${var.user_data}"
   tags = {
-    Name = "Custom EC2"
+    Name = var.instance_name
   }
 }
 
 resource "tls_private_key" "key_gen" {
-  algorithm = "RSA"
-  rsa_bits = 2048
+  algorithm = var.rsa_algorithm
+  rsa_bits = var.rsa_bit
 }
 
 resource "aws_key_pair" "key" {
